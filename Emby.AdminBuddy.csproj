@@ -15,8 +15,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Configuration\AdminBuddyConfigurationPage.html" />
     <EmbeddedResource Include="Configuration\AdminBuddyConfigurationPage.js" />
-    <EmbeddedResource Include="Configuration\PluginTab2ConfigurationPage.html" />
-    <EmbeddedResource Include="Configuration\PluginTab2ConfigurationPage.js" />
+    <EmbeddedResource Include="Configuration\AdminCopyUserConfigurationPage.html" />
+    <EmbeddedResource Include="Configuration\AdminCopyUserConfigurationPage.js" />
     <EmbeddedResource Include="thumb.jpg" />
   </ItemGroup>
 

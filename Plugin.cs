@@ -57,6 +57,18 @@ namespace Emby.AdminBuddy
                 Name = "AdminBuddyConfigurationPageJS",
                 EmbeddedResourcePath = GetType().Namespace + ".Configuration.AdminBuddyConfigurationPage.js"
             },
+            new PluginPageInfo
+            {
+                //html File
+                Name = "AdminCopyUserConfigurationPage",
+                EmbeddedResourcePath = GetType().Namespace + ".Configuration.AdminCopyUserConfigurationPage.html",
+            },
+            new PluginPageInfo
+            {
+                //javascript file
+                Name = "AdminCopyUserConfigurationPageJS",
+                EmbeddedResourcePath = GetType().Namespace + ".Configuration.AdminCopyUserConfigurationPage.js"
+            },
         };
 
 
