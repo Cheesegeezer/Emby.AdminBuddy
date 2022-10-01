@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyVersion>0.0.0.1</AssemblyVersion>
+    <FileVersion>0.0.0.1</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Configuration\AdminBuddyConfigurationPage.html" />
+    <None Remove="Configuration\AdminBuddyConfigurationPage.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\AdminBuddyConfigurationPage.html" />
+    <EmbeddedResource Include="Configuration\AdminBuddyConfigurationPage.js" />
+    <EmbeddedResource Include="Configuration\PluginTab2ConfigurationPage.html" />
+    <EmbeddedResource Include="Configuration\PluginTab2ConfigurationPage.js" />
+    <EmbeddedResource Include="thumb.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediaBrowser.Common" Version="4.7.6" />
+    <PackageReference Include="MediaBrowser.Server.Core" Version="4.7.6" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Text.Json" Version="6.0.5" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;C:\Users\davey\Documents\GitHub\Emby.AdminBuddy\bin\Debug\netstandard2.0\Emby.AdminBuddy.dll&quot; &quot;C:\Users\davey\AppData\Roaming\Emby-Server\programdata\plugins\&quot; /Y" />
+  </Target>
+
+</Project>

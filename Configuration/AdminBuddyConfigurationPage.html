@@ -1,0 +1,207 @@
+﻿<div data-role="page" style="align-items: center; margin: auto;" class="type-interior pluginConfigurationPage withTabs libraryFileOrganizerLogPage" data-require="emby-button,emby-input,emby-select,emby-toggle,emby-collapse" data-controller="__plugin/AdminBuddyConfigurationPageJS">
+    <div class="content-primary">
+        <div class="verticalSection verticalSection">
+            <div class="sectionTitleContainer sectionTitleContainer-cards align-items-center">
+                <h2>
+                    Vantage Point Movies Setup
+                </h2>
+            </div>
+
+            <div class="paperList checkboxList checkboxList-paperList">
+                <h3 class="checkboxListLabel">Enable Vantage Point For Movies</h3>
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkEnableVPForMovies" />
+                    <span class="toggleButtonLabel mdl-switch__label">Enable Intros for Movies</span>
+                </label>
+                <div class="fieldDescription">Allow Intros to play for movies if over the Global Time Setting</div>
+            </div>
+            <br />
+
+            <div class="paperList checkboxList checkboxList-paperList">
+                <h3 class="checkboxListLabel">Add New Intro</h3>
+                <button type="button" is="emby-button" id="btnAddNewIntro" title="AddNewIntro" aria-label="AddNewIntro" class="raised button-submit block" style="width: 50%; justify-self: center;">Add New Intro</button>
+                <br />
+
+                <div id="AddIntroOptions" style="max-width: 50%;">
+                    <div style="flex-grow: 1; flex-direction: row;" class="selectContainer">
+                        <label class="selectLabel">Select Intro Type</label>
+                        <select is="emby-select" name="selectIntroType" id="selectIntroType" label="Select Type" data-mini="true" class="emby-select-withcolor emby-select pulse">
+                        </select>
+                        <div class="fieldDescription">
+                            Choose the type of intro you wish to add to your Pre Roll
+                        </div>
+                    </div>
+                    <!-- <button type="button" is="paper-icon-button-light" id="btnAddSeriesToIgnoreList" title="Ignore Series" aria-label="Ignore Series" class="emby-input-iconbutton paper-icon-button-light icon-button-conditionalfocuscolor" style="top: -45px"><i class="md-icon">add</i></button> -->
+                </div>
+            </div>
+
+            <!-- FOLDER OR FILE SPECIFIC OPTION -->
+            <div id="specificOptions" class="paperList checkboxList checkboxList-paperList" style="display: flex; flex-direction: column;">
+                <h3 id="IntroLabel" class="checkboxListLabel"></h3>
+
+                <div style="display: flex; flex-direction: column; width: 50%;">
+                    <div style="flex-grow:1;">
+                        <input is="emby-input" class="txtIntroName" label="Intro Name" autocomplete="off" />
+                    </div>
+                    <div class="fieldDescription">
+                        <div>Give this Intro a Friendly Name - "Deadpool Trivia"</div>
+                    </div>
+                </div>
+                <br />
+
+                <div style="display: flex; align-items: center; width: 50%;">
+                    <div style="flex-grow:1;">
+                        <input is="emby-input" class="txtPathToIntro" label="Select Intro Path" autocomplete="off" />
+                    </div>
+                    <button type="button" is="paper-icon-button-light" id="btnPathToIntro" class="emby-input-iconbutton" title="${ButtonSelectDirectory}"><i class="md-icon">search</i></button>
+                </div>
+                <br />
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkEnableForWatchedContent" />
+                    <span class="toggleButtonLabel mdl-switch__label">Enable For Already Watched Movies</span>
+                </label>
+                <div class="fieldDescription">If a Movie has been watched - This Intro will be played, if enabled</div>
+                <br />
+
+                <div class="inputContainer numberpicker" style="width: 50%">
+                    <input is="emby-input" type="number" id="numToPlay" min="1" max="20" step="1" value="1" label="Number of Intros to Play" />
+                    <div class="fieldDescription">Min is 1 - Max Limit is 20</div>
+                </div>
+
+
+                <br />
+                <button type="button" is="emby-button" id="btnSaveIntro" title="btnSaveIntro" aria-label="btnSaveIntro" class="raised button-submit block" style="width: 50%; justify-self: center;">Save Intro Info</button>
+
+            </div>
+
+            <!-- TRAILER SPECIFIC OPTION -->
+            <div id="trailerOptions" class="paperList checkboxList checkboxList-paperList" style="display: flex; flex-direction: column;">
+                <h3 id="TrailerIntroLabel" class="checkboxListLabel"></h3>
+
+                <div style="display: flex; flex-direction: column; width: 50%;">
+                    <div style="flex-grow:1;">
+                        <input is="emby-input" id="txtTrailersName" label="Intro Name" autocomplete="off" />
+                    </div>
+                    <div class="fieldDescription">
+                        <div>Give this Intro a Friendly Name - "Online Trailers"</div>
+                    </div>
+                </div>
+                <br />
+
+                <div class="inputContainer numberpicker" style="max-width: 50%">
+                    <input is="emby-input" type="number" id="numTrailersToPlay" min="1" max="20" step="1" value="1" label="Number of Trailers to Play" />
+                    <div class="fieldDescription">Min is 1 - Max Limit is 20</div>
+                </div>
+                <br />
+
+                <h3><strong>NOTE: </strong>to use online trailers, leave Select Local Trailers disabled</h3>
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkEnableTrailersForWatchedContent" />
+                    <span class="toggleButtonLabel mdl-switch__label">Enable For Already Watched Movies</span>
+                </label>
+                <div class="fieldDescription">If a Movie has been watched - This Intro will be played, if enabled</div>
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkEnableParentalControl" />
+                    <span class="toggleButtonLabel mdl-switch__label">Enable Parental Control</span>
+                </label>
+                <div class="fieldDescription">Selects Trailers that are the same or lower Parental Rating</div>
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkEnableSimilar" />
+                    <span class="toggleButtonLabel mdl-switch__label">Enable Similar Trailers</span>
+                </label>
+                <div class="fieldDescription">Selects Trailers that are similar to the Feature Movie</div>
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkIncludeWatchedTrailers" />
+                    <span class="toggleButtonLabel mdl-switch__label">Include Watched Trailers</span>
+                </label>
+                <div class="fieldDescription">Allows already seen Trailers to be chosen</div>
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkUseLocalTrailers" />
+                    <span class="toggleButtonLabel mdl-switch__label">Select Local Trailers</span>
+                </label>
+                <div class="fieldDescription">Selects Trailers from your Library (movie-trailer.ext) - This will disable Online Trailers</div>
+
+                <button type="button" is="emby-button" id="btnSaveTrailer" title="btnSaveTrailer" aria-label="btnSaveIntro" class="raised button-submit block" style="width: 50%; justify-self: center;">Save Trailer Intro</button>
+
+            </div>
+
+            <!-- CODEC SPECIFIC OPTION -->
+            <div id="codecOptions" class="paperList checkboxList checkboxList-paperList" style="display: flex; flex-direction: column;">
+                <h3 id="codecIntroLabel" class="checkboxListLabel"></h3>
+
+                <div style="display: flex; flex-direction: column; width: 50%;">
+                    <div style="flex-grow:1;">
+                        <input is="emby-input" id="txtCodecName" label="Intro Name" autocomplete="off" />
+                    </div>
+                    <div class="fieldDescription">
+                        <div>Give this Intro a Friendly Name - "Audio & Tag Match"</div>
+                    </div>
+                </div>
+                <br />
+
+                <div style="display: flex; align-items: center; width: 50%;">
+                    <div style="flex-grow:1;">
+                        <input is="emby-input" class="txtPathToCodecs" label="Select Intro Path" autocomplete="off" />
+                    </div>
+                    <button type="button" is="paper-icon-button-light" id="btnPathToCodec" class="emby-input-iconbutton" title="${ButtonSelectDirectory}"><i class="md-icon">search</i></button>
+                </div>
+                <br />
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkEnableCodecsForWatchedContent" />
+                    <span class="toggleButtonLabel mdl-switch__label">Enable For Already Watched Movies</span>
+                </label>
+                <div class="fieldDescription">If a Movie has been watched - This Intro will be played, if enabled</div>
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkMatchAudio" />
+                    <span class="toggleButtonLabel mdl-switch__label">Play a matched Audio Codec</span>
+                </label>
+                <div class="fieldDescription">If the Audio Codec matches the Intro filename play the Intro</div>
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkMatchVideo" />
+                    <span class="toggleButtonLabel mdl-switch__label">Play a matched Video Codec</span>
+                </label>
+                <div class="fieldDescription">If the Video Codec matches the Intro filename play the Intro</div>
+
+                <label class="checkboxContainer">
+                    <input is="emby-toggle" type="checkbox" class="chkMatchTags" />
+                    <span class="toggleButtonLabel mdl-switch__label">Play matched Tag Intros</span>
+                </label>
+                <div class="fieldDescription">If the Item Tags match any Intro filename play the Intro(s)</div>
+
+                <label class="checkboxContainer">
+	                <input is="emby-toggle" type="checkbox" class="chkMatchTitles" />
+	                <span class="toggleButtonLabel mdl-switch__label">Play matched Embedded Track Titles</span>
+                </label>
+                <div class="fieldDescription">If the Item Track Title matches any Intro filename - play the Intro</div>
+
+                <!--<div style="display: flex; flex-direction: column; width: 50%;">
+                    <div style="flex-grow:1;">
+                        <input is="emby-input" class="txtCustomIntrosPath" label="Match Embedded Track Title" autocomplete="off" />
+                    </div>
+                    <div class="fieldDescription">
+                        <div>If you have custom Embedded Track Titles, use this to match that title and play an intro"</div>
+                    </div>
+                    <div class="fieldDescription">
+                        <div>comma delimited - e.g. "Mono 1.0, stereo, Dolby 2.0"</div>
+                    </div>
+                </div>-->
+
+                <button type="button" is="emby-button" id="btnSaveCodec" title="btnSaveCodec" aria-label="btnSaveCodec" class="raised button-submit block" style="width: 50%; justify-self: center;">Save Codec Intro</button>
+
+            </div>
+            
+            <h3 style="justify-self: center; color:coral"><strong>YOU MUST RUN A LIBRARY SCAN AFTER YOU HAVE FINISHED SETTING UP INTROS OR ADDED NEW INTROS</strong></h3>
+
+            <ul class="introViewContainer" id="introViewContainer" style="display: grid; flex-grow:1; background-color: rgb(44, 41, 41); border-radius: 5px; border-width: 2px; border-color: aliceblue; padding:20px">
+            </ul>
+        </div>
+    </div>
+</div>
