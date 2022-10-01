@@ -7,6 +7,7 @@ namespace Emby.AdminBuddy.Configuration
         //User Configuration Files
         public bool EnableAdminBuddy { get; set; }
 
+
         public PluginConfiguration()
         {
             //add default values here to use
