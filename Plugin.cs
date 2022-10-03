@@ -44,24 +44,12 @@ namespace Emby.AdminBuddy
             new PluginPageInfo
             {
                 //html File
-                Name = "AdminBuddyConfigurationPage",
-                EmbeddedResourcePath = GetType().Namespace + ".Configuration.AdminBuddyConfigurationPage.html",
+                Name = "AdminCopyUserConfigurationPage",
+                EmbeddedResourcePath = GetType().Namespace + ".Configuration.AdminCopyUserConfigurationPage.html",
                 EnableInMainMenu = true,
                 DisplayName = "AdminBuddy",
                 MenuSection = "server",
                 //MenuIcon = "theaters"
-            },
-            new PluginPageInfo
-            {
-                //javascript file
-                Name = "AdminBuddyConfigurationPageJS",
-                EmbeddedResourcePath = GetType().Namespace + ".Configuration.AdminBuddyConfigurationPage.js"
-            },
-            new PluginPageInfo
-            {
-                //html File
-                Name = "AdminCopyUserConfigurationPage",
-                EmbeddedResourcePath = GetType().Namespace + ".Configuration.AdminCopyUserConfigurationPage.html",
             },
             new PluginPageInfo
             {

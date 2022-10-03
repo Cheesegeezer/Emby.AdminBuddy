@@ -6,21 +6,122 @@
 
         const pluginId = "49D2A5FB-7662-46A5-A453-E144D0FCECAB";
 
-        
-
         function getTabs() {
             return [
                 {
                     href: Dashboard.getConfigurationPageUrl('AdminBuddyConfigurationPage'),
                     name: 'Create-Users'
-                },
-                {
-                    href: Dashboard.getConfigurationPageUrl('AdminCopyUserConfigurationPage'),
-                    name: 'Copy-Users'
                 }
             ];
         }
 
+        let allUsers;
+        let userInfo;
+        let userConfig;
+        let userPolicy;
+        
+        async function getAllUsers() {
+            let myPromise = new Promise(function (resolve) {
+                resolve(ApiClient.getUsers()); 
+            });
+            allUsers = await myPromise;
+        }
+
+        function delay(time) {
+            return new Promise(resolve => setTimeout(resolve, time));
+        }
+
+        //Create New User
+        async function createNewUser(name) {
+            let label = document.querySelector('#lblStatus');
+            ApiClient.createUser(name);
+            await delay(1000);
+            await getAllUsers();
+            console.log('All Users Found:', allUsers);
+            
+            for (let i = 0; i < allUsers.length; i++) {
+                if (allUsers[i].Name === name) {
+                    console.log('User Found: ', allUsers[i]);
+                    //update config
+                    await ApiClient.updateUserPolicy(allUsers[i].Id, userPolicy);
+                    label.innerHTML = 'User Created and Policy updated';
+                    console.log('User Policy Updated: ', userPolicy);
+                    await delay(1000);
+                    await ApiClient.updateUserConfiguration(allUsers[i].Id, userConfig);
+                    label.innerHTML = 'User Created and Policy and Configuration updated';
+                    console.log('User Configuration Updated: ', userConfig);
+                    break;
+                }
+            }
+        }
+
+        function action_dlg() {
+            
+                var dlg = dialogHelper.createDialog({
+                    removeOnClose: true,
+                    size: 'small'
+                });
+
+                dlg.classList.add('ui-body-a');
+                dlg.classList.add('background-theme-a');
+
+                dlg.classList.add('formDialog');
+                dlg.style.maxWidth = '35%';
+                dlg.style.maxHeight = '50%';
+
+                var html = '';
+                html += '<div class="formDialogHeader">';
+                html += '<button is="paper-icon-button-light" class="btnCancel autoSize" tabindex="-1"><i class="md-icon">&#xE5C4;</i></button>';
+                html += `<h3 class="formDialogHeaderTitle">Create New User</h3>`;
+                html += '</div>';
+                html += '<div class="formDialogContent" style="margin:2em">';
+                html += '<div class="dialogContentInner" style="max-width: 70%; max-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center">';
+
+                //Name Entry
+                html += '<input is="emby-input" id="textUserName" label="Enter New User Name" autocomplete="off" style="margin-left: 45%;" />';
+                html += '<br />';
+
+                //Save
+                html += '<button is="emby-button" type="button" style="margin-left:45%; margin-bottom:3em; background-color:green;" class="btnSaveUser raised button-submit block emby-button">';
+                html += '<span>Save New User</span>';
+                html += '</button>';
+
+                //Cancel
+                html += '<button is="emby-button" type="button" class="btnCancel raised button-cancel" style="margin-left: 45%; background-color:red;">';
+                html += '<span>Close</span>';
+                html += '</button>';
+
+                html += '<br />';
+                html += '<label id="lblStatus" style="margin-left: 45%;">Status</label>';
+
+
+                html += '</div>';
+
+                html += '</div>';
+                html += '</div>';
+
+                dlg.innerHTML = html;
+
+                var btnSaveUser = dlg.querySelector(".btnSaveUser");
+                var userNameTxt = dlg.querySelector("#textUserName");
+                btnSaveUser.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (userNameTxt.value === "") {
+                        alert('Please enter a User Name');
+                    } else {
+                        console.log('UserName: ', userNameTxt.value);
+                        createNewUser(userNameTxt.value);
+                    }
+                });
+
+                dlg.querySelectorAll('.btnCancel').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        dialogHelper.close(dlg);
+                    });
+                });
+                dialogHelper.open(dlg);
+        }
+        
         //GetUsers
         async function getUsers() {
             return await ApiClient.getJSON(ApiClient.getUrl('Users'));
@@ -28,6 +129,34 @@
 
         async function getUser(id) {
             return await ApiClient.getJSON(ApiClient.getUrl('Users/' + id));
+        }
+
+        
+        let isAdmin = false;
+        async function getCurrentUserId() {
+            let myPromise = new Promise(function (resolve) {
+                resolve(ApiClient.getCurrentUserId());
+            });
+            currentId = await myPromise;
+            console.log("Current User Id:", currentId);
+            getCurrentUserDto(currentId);
+
+        }
+        async function getCurrentUserDto(id) {
+            await getUser(id)
+                .then(UserPolicy)
+                .catch((error) => {
+                    console.log('ERROR: ', error);
+                });
+        }
+
+        async function UserPolicy(data) {
+            let currentUserInfo = data.Policy;
+            userPolicy = data.Policy;
+            console.log("IsAdmin: ", currentUserInfo.IsAdministrator);
+            if (currentUserInfo.IsAdministrator === true) {
+                isAdmin = true;
+            }
         }
 
         async function getUserDto(id) {
@@ -38,10 +167,10 @@
                 });
         }
 
-        let userInfo;
-        let userConfig;
-        let userPolicy;
+        
+        
         async function copyUserPolicy(data) {
+
             userInfo = data;
             userConfig = data.Configuration;
             userPolicy = data.Policy;
@@ -49,78 +178,19 @@
             console.log('User Config data: ', userConfig);
             console.log('User Policy data: ', userPolicy);
 
-            if (userPolicy.IsAdministrator) {
+            if (isAdmin === true) {
                 await createNewUserFromExisting();
             } else {
-                alert("YOU DO NOT HAVE ADMIN RIGHTS");
+                alert("YOU DO NOT HAVE ADMINISTRATOR RIGHTS");
             }
         }
 
         async function createNewUserFromExisting() {
             console.log("Copying data from Existing User to new User");
-
-
-
+            action_dlg();
         };
 
-        function getListItemHtml(user, padding) {
-            var html = '';
-            html +=
-                '<div class="virtualScrollItem listItem listItem-border focusable listItemCursor listItem-hoverable listItem-withContentWrapper" tabindex="0" draggable="false" style="transform: translate(0px, ' +
-                padding +
-                'px);">';
-            html += '<div class="listItem-content listItemContent-touchzoom">';
-            html += '<div class="listItemBody itemAction listItemBody-noleftpadding">';
-            html += '<div class="listItemBodyText listItemBodyText-nowrap">' + user.Name + '</div>';
-            html +=
-                '<div class="listItemBodyText listItemBodyText-secondary listItemBodyText-nowrap">Intro Auto Skip enabled for this account.</div>';
-            html += '</div>';
-            html +=
-                '<button title="Remove" aria-label="Remove" type="button" is="paper-icon-button-light" class="listItemButton itemAction paper-icon-button-light icon-button-conditionalfocuscolor removeItemBtn" id="' +
-                user.Id +
-                '">';
-            html += '<i class="md-icon removeItemBtn" style="pointer-events: none;">delete</i>';
-            html += '</button> ';
-            html += '</div>';
-            html += '</div>';
-            return html;
-        }
-
-        function handleRemoveItemClick(e, element, view) {
-            var id = e.target.closest('button').id;
-            ApiClient.getPluginConfiguration(pluginId).then((config) => {
-                var filteredList = config.AutoSkipUsers.filter(userId => userId != id);
-                config.AutoSkipUsers = filteredList;
-                ApiClient.updatePluginConfiguration(pluginId, config).then((r) => {
-                    reloadList(filteredList, element, view);
-                    loadUsersSelect(config, view);
-                    Dashboard.processPluginConfigurationUpdateResult(r);
-                });
-            });
-        }
-
-        /*function reloadList(element, view) {
-            element.innerHTML = '';
-            if (list && list.length) {
-                var padding = 0;
-                list.forEach(async item => {
-                    var user = await getUser(item);
-                    element.innerHTML += getListItemHtml(user, padding);
-                    padding += 77; //Why is this padding necessary
-                    var removeButtons = view.querySelectorAll('.removeItemBtn');
-                    removeButtons.forEach(btn => {
-                        btn.addEventListener('click',
-                            el => {
-                                el.preventDefault();
-                                handleRemoveItemClick(el, element, view);
-                            });
-                    });
-
-                });
-            }
-        }*/
-
-        function loadUsersSelect(config, view) {
+        function loadUsersSelect(view) {
             var usersSelect = view.querySelector('#selectEmbyUsers');
             usersSelect.innerHTML = '';
             getUsers().then(users => {
@@ -138,15 +208,14 @@
                 async () => {
 
                     loading.show();
-                    mainTabsManager.setTabs(this, 1, getTabs);
-
-                    var config = await ApiClient.getPluginConfiguration(pluginId);
-
-                    var userList = view.querySelector('.user-list');
+                    mainTabsManager.setTabs(this, 0, getTabs);
+                    
+                    getCurrentUserId();
+                    
                     var userSelect = view.querySelector('#selectEmbyUsers');
                     var copyUserProfile = view.querySelector('#btnAddUserToAutoSkipList');
 
-                    loadUsersSelect(config, view);
+                    loadUsersSelect(view);
 
                     loading.hide();
 
@@ -154,6 +223,8 @@
                         (e) => {
                             e.preventDefault();
                             loading.show();
+
+                            
 
                             var userId = userSelect[userSelect.selectedIndex].value;
                             console.log("UserId:", userId);
