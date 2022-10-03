@@ -45,11 +45,11 @@
                     //update config
                     await ApiClient.updateUserPolicy(allUsers[i].Id, userPolicy);
                     label.innerHTML = 'User Created and Policy updated';
-                    console.log('User Policy Updated: ', userPolicy);
+                    //console.log('User Policy Updated: ', userPolicy);
                     await delay(1000);
                     await ApiClient.updateUserConfiguration(allUsers[i].Id, userConfig);
                     label.innerHTML = 'User Created and Policy and Configuration updated';
-                    console.log('User Configuration Updated: ', userConfig);
+                    //console.log('User Configuration Updated: ', userConfig);
                     break;
                 }
             }
@@ -92,7 +92,7 @@
                 html += '</button>';
 
                 html += '<br />';
-                html += '<label id="lblStatus" style="margin-left: 45%;">Status</label>';
+                html += '<label id="lblStatus" style="margin-left: 45%; width: 100%;">Status</label>';
 
 
                 html += '</div>';
@@ -101,6 +101,8 @@
                 html += '</div>';
 
                 dlg.innerHTML = html;
+                let statusLabel = dlg.querySelector('#lblStatus');
+                statusLabel.innerHTML = "Ready to Copy User Data from:-  " + userInfo.Name;
 
                 var btnSaveUser = dlg.querySelector(".btnSaveUser");
                 var userNameTxt = dlg.querySelector("#textUserName");
@@ -166,8 +168,6 @@
                     console.log('ERROR: ', error);
                 });
         }
-
-        
         
         async function copyUserPolicy(data) {
 
