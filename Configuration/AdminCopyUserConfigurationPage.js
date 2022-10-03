@@ -195,10 +195,11 @@
             usersSelect.innerHTML = '';
             getUsers().then(users => {
                 for (let i = 0; i <= users.length - 1; i++) {
-                    /*if (config.AutoSkipUsers.includes(users[i].Id)) {
-                        continue;
-                    }*/
-                    usersSelect.innerHTML += '<option value="' + users[i].Id + '">' + users[i].Name + '</option>';
+                    if (users[i].Policy.IsAdministrator === true) {
+                        usersSelect.innerHTML += '<option value="' + users[i].Id + '">' + users[i].Name + " (Admin)" + '</option>';
+                    } else {
+                        usersSelect.innerHTML += '<option value="' + users[i].Id + '">' + users[i].Name + '</option>';
+                    }
                 }
             });
         }
